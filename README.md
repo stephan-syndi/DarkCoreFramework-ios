@@ -57,5 +57,44 @@ end
 ```
 > ⚠️ Note: Замените _YourTargetName_ на Ваше имя приложения. 
 
-4. Откройте проект через файл с расширением _.xcworksoace_. Выберите свой Target в **Project Navigator** 
+4. Откройте проект через файл с расширением _.xcworksoace_. Выберите свой Target в **Project Navigator**: Вкладка **General** -> Найдите секцию **Frameworks, Libraries, and Embedded Content** и удалите добавленные фреймворки (FirebaseCore, FirebaseMessaging, AppsFlyerLib) если такие добавились. 
+
+5. В секции **Supported Destinations** оставьте только *iPhone*
+6. Вкладка **Signing & Capabilities**, снимите галочку с *Automatically manage signing*. Добавьте **Capability**:
+- Background Modes: Background fetch + Remote notifications
+- Push Notifications 
+- Camera: Allow to this app use your camera.
+- Microphone: Allows microphone access.
+- Photo Library: Allows photo library access.
+- User Tracking: Your data will be used to personalize ads.
+
+7. Добавьте в проект **Notification Service Extension** и настройте его как обычно. 
+
+### Интеграция фреймворка 
+
+#### 1. Добавьте новый XCFramework:
+
+1. Откройте Finder и перейдите в директории где распакован фреймворк
+2. Перетащите `DarkCoreFramework.xcframework` в Xcode Project Navigator
+3. В диалоге выберите:
+   - ✅ **Copy items if needed**
+   - ✅ Target: **YourTarget**
+   - Нажмите **Finish**
+
+#### 2. Настройте Embed & Sign:
+
+1. Выберите проект в Project Navigator (самый верхний элемент)
+2. Выберите Target **YourTarget**
+3. Вкладка **General**
+4. Найдите секцию **Frameworks, Libraries, and Embedded Content**
+5. Найдите `DarkCoreFramework.xcframework`
+6. В колонке справа выберите **"Embed & Sign"** (не "Do Not Embed")
+
+
+#### 3. Очистите и пересоберите:
+
+1. В Xcode: **Product** → **Clean Build Folder** (⇧⌘K)
+2. В Xcode: **Product** → **Build** (⌘B)
+3. Запустите на симуляторе: **Product** → **Run** (⌘R)
+> Если билд собрался и запустился на симуляторе без ошибок, переходим к настройке кора. 
 
