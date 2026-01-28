@@ -103,7 +103,8 @@ end
 1. Откройте проект и в корне создайте **view**: `MainContentView`. 
 2. Добавьте иморт на библиотеку `import DarkCoreFramework`. 
 3. Замените содержимое следующим кодом: 
-```Swift 
+
+```swift 
 struct MainContentView: View {
     @EnvironmentObject var router: AppRouter
     
@@ -113,7 +114,7 @@ struct MainContentView: View {
 } 
 ```
 4. Откройте `YourApp` файл и добавьте следующий код:
-```Swift 
+```swift 
 import DarkCoreFramework
 // ...
 
@@ -126,7 +127,7 @@ struct YourApp: App {
 
     private let router: AppRouter
     
-    //...
+    // ...
 
     init(){
         print("👉 init MyApp") 
@@ -143,3 +144,118 @@ struct YourApp: App {
     }
 }
 ```
+
+## Кастомизация ресурсов
+
+### Изображения
+
+```swift
+let config = Configuration(
+    appsDevKey: "your_key",
+    appleAppId: "your_id",
+    
+    // Свои изображения
+        customMainBack: "my_background",           // Фоновое изображение
+        customLogo: "my_logo",                     // Логотип приложения
+        customCurtainHeader: "my_header",          // Заголовок на экране загрузки
+        customPopup: "my_popup_bg",                // Фон popup окна
+        customPermissionBtnImage: "my_btn_image"   // Изображение кнопки разрешений
+    )
+```
+
+### Цвета
+
+```swift
+let config = Configuration(
+    appsDevKey: "your_key",
+    appleAppId: "your_id",
+    
+    // Свои цвета (имена из Assets.xcassets)
+    customBackColor: "MyBackgroundColor",
+    customPermissionBtnColor: "MyButtonColor",
+    customPermissionFontColor: "MyTextColor",
+    customPermissionFadeColor: "MyGradientColor"
+)
+```
+
+### Тексты
+
+```swift
+let config = Configuration(
+    appsDevKey: "your_key",
+    appleAppId: "your_id",
+    
+    // Свои тексты
+    customTitlePermission: "Разрешите уведомления",
+    customSubtitlePermission: "Будьте в курсе всех бонусов",
+    customInternetMessage: "Проверьте интернет-соединение"
+)
+```
+
+## Полный пример
+
+```swift
+import DarkCoreFramework
+import SwiftUI
+
+@main
+struct MyApp: App {
+    @UIApplicationDelegateAdaptor(DarkAppDelegate.self) var appDelegate
+    
+    init() {
+        let config = Configuration(
+            appsDevKey: "your_appsflyer_key",
+            appleAppId: "your_apple_id",
+            backIsImage: true,
+            permissionBtnIsImage: false,
+            splitScreen: false,
+            
+            // Кастомные ресурсы
+            customMainBack: "my_custom_background",
+            customLogo: "my_app_logo",
+            customCurtainHeader: "my_loading_header",
+            customPopup: "my_popup_background",
+            customPermissionBtnImage: "my_button_image",
+            
+            customBackColor: "AppBackgroundColor",
+            customPermissionBtnColor: "PrimaryButtonColor",
+            customPermissionFontColor: "PrimaryTextColor",
+            customPermissionFadeColor: "GradientColor",
+            
+            customTitlePermission: "Get Notifications",
+            customSubtitlePermission: "Stay updated with bonuses",
+            customInternetMessage: "No internet connection"
+        )
+        
+        let router = DarkCore.configure(config: config, clearView: ContentView())
+        appDelegate.router = router
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+## Как добавить свои ресурсы
+
+1. **Изображения**: Добавьте в `Assets.xcassets` вашего проекта
+2. **Цвета**: Создайте Color Set в `Assets.xcassets`
+3. **Укажите имена**: Передайте имена ресурсов в `Configuration`
+
+## Приоритет загрузки
+
+Фреймворк ищет ресурсы в следующем порядке:
+
+1. **Кастомный ресурс из вашего приложения** (если указан)
+2. **Стандартный ресурс из вашего приложения** (если есть)
+3. **Стандартный ресурс из фреймворка**
+4. **Программный fallback** (автоматически сгенерированное изображение)
+
+## Примечания
+
+- Если параметр `customXXX` не указан, используются стандартные ресурсы фреймворка
+- Все параметры опциональны - можно переопределить только нужные
+- Ресурсы загружаются из `Bundle.main` вашего приложения
