@@ -70,7 +70,7 @@ end
 
 7. Добавьте в проект **Notification Service Extension** и настройте его как обычно. 
 
-### Интеграция фреймворка 
+## Интеграция фреймворка 
 
 #### 1. Добавьте новый XCFramework:
 
@@ -98,3 +98,48 @@ end
 3. Запустите на симуляторе: **Product** → **Run** (⌘R)
 > Если билд собрался и запустился на симуляторе без ошибок, переходим к настройке кора. 
 
+## Настройка кора 
+
+1. Откройте проект и в корне создайте **view**: `MainContentView`. 
+2. Добавьте иморт на библиотеку `import DarkCoreFramework`. 
+3. Замените содержимое следующим кодом: 
+```Swift 
+struct MainContentView: View {
+    @EnvironmentObject var router: AppRouter
+    
+    var body: some View {
+        router.changeScreen()
+    }
+} 
+```
+4. Откройте `YourApp` файл и добавьте следующий код:
+```Swift 
+import DarkCoreFramework
+// ...
+
+struct YourApp: App {
+    @UIApplicationDelegateAdaptor(DarkAppDelegate.self) var appDelegate
+    let config = Configuration(
+        appsDevKey: "yourAFKey",
+        appleAppId: "yourAppleID"
+    )
+
+    private let router: AppRouter
+    
+    //...
+
+    init(){
+        print("👉 init MyApp") 
+
+        router = DarkCore.configure(config: config, clearView: ContentView())
+        appDelegate.router = router
+    }
+
+    var body: some Scene {
+        WindowGroup {
+             MainContentView()
+                .environmentObject(router)
+        }
+    }
+}
+```
