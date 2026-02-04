@@ -2,6 +2,10 @@
 
 - [Подготовка](#подготовка)
 - [Интеграция фреймворка](#интеграция-фреймворка)
+- [Настройка кора](#настройка-кора)
+    + [Настройка конфигурации](#настройка-конфигурации)
+    + [Регистрация View + Фантик](#регистрация-view--фантик)
+    
 
 ## Подготовка
 
@@ -103,7 +107,7 @@ end
 
 ## Настройка кора 
 
-> ⚠️ Note: Фркймворк не предлагает реализаций View для Splash (Curtain), Internetn, Permission. Вместо этого Вам необходимо самостоятельно реализовать данные окна. 
+> ⚠️ Note: Фреймворк не предлагает реализаций View для Splash (Curtain), Internetn, Permission. Вместо этого Вам необходимо самостоятельно реализовать данные окна. 
 
 1. Откройте проект и в корне создайте **view**: `MainContentView`. 
 2. Добавьте импорт на библиотеку `import DarkCoreFramework`. 
@@ -122,27 +126,29 @@ struct MainContentView: View {
 } 
 ```
 
-### Настройка конфигурации
+#### Настройка конфигурации
 
 Для того, чтобы ваш проект был способен взаимодействовать с кором, вам необходимо зарегистрировать **ApplicationDelegate**, который представлен классом **DarkAppDelegate**: `@UIApplicationDelegateAdaptor(DarkAppDelegate.self) var appDelegate`.
 После чего вам необходимо создать переменную `Configuration` которая хранит настройки коро: 
 ```swift
  let config = Configuration(
-        appsDevKey: "yourAFKey",
-        appleAppId: "yourAppleID",
-        endpoint: "https://yourDomain", // без '/'
-        firebaseGCMSenderId: "yourGCMSenderId"
+        appsDevKey: "yourAFKey",                    // код приложения в AppsFlyer
+        appleAppId: "yourAppleID",                  // id приложения из Apple Store
+        endpoint: "https://yourDomain",             // ваша доменная ссылка без '/'
+        firebaseGCMSenderId: "yourGCMSenderId"      // код проекта в Firebase
     )
 ```
 > ⚠️ Note: Соблюдайте порядок инциализации параметров в структуре `Configuration` как в примере.
 
-### Регистрация View + Фантик
+#### Регистрация View + Фантик
 
-Чтобы фреймворк правильно обрабатывал вашу реализацию `View` и `фантика` необходимо их зарегистрировать в `AppRouter`. Для этого создай параметр `private let router: AppRouter` и в `init()` сделайте следующее:
+Чтобы фреймворк правильно обрабатывал вашу реализацию `View` и `фантика` необходимо их зарегистрировать в `AppRouter`. Для этого создай параметр `private let router: AppRouter` и в `init()` проинициализируйте и передайте в делегат следующим образом:
 ```swift
     init(){
         router = DarkCore.configure(config: config, clearView: ContentView()) 
+        // ... 
 
+        appDelegate.router = router
     }
 ```
 `router = DarkCore.configure(config: config, clearView: ContentView())` - метод `configure` принимает `2 параметра`:
@@ -168,41 +174,51 @@ init() {
 }
 ```
 
+`AppRouter` необходимо передать как `EvironmentObject`, для этого в **body** сделайте следующее: 
 
-Откройте `YourApp` файл и добавьте следующий код:
 ```swift 
-import DarkCoreFramework
-// ...
+    var body: some Scene {
+        WindowGroup {
+            MainContentView()
+                .environmentObject(router)
+        }
+    }
+```
 
+Полный пример кода `YourApp` 
+
+```swift
+import SwiftUI
+import DarkCoreFramework
+
+@main
 struct YourApp: App {
     @UIApplicationDelegateAdaptor(DarkAppDelegate.self) var appDelegate
     let config = Configuration(
         appsDevKey: "yourAFKey",
         appleAppId: "yourAppleID",
-        endpoint: "https://yourDomain", // без '/'
+        endpoint: "https://yourDomain", 
         firebaseGCMSenderId: "yourGCMSenderId"
     )
 
     private let router: AppRouter
     
-    // ...
-
     init(){
-        print("👉 init MyApp") 
-
         router = DarkCore.configure(config: config, clearView: ContentView())
-
-        // установить кастомные View для Internet, Splash, Permission
+        
         router.setScreen(screen: .curtain, view: CurtainView())
-
+        router.setScreen(screen: .permission, view: PermissionView(viewModel: router.getPermissionViewModel()))
+        router.setScreen(screen: .internet, view: InternetAlertView())
+        
         appDelegate.router = router
     }
 
     var body: some Scene {
         WindowGroup {
-             MainContentView()
+            MainContentView()
                 .environmentObject(router)
         }
     }
 }
+
 ```
