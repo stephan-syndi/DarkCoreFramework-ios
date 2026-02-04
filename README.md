@@ -87,12 +87,15 @@ end
 ---
 #### Notification Service Extension 
 
+В проект добавить **GoogleService-Info.plist** скаченный на сайте Firebase вашего проекта, после чего добавить APNs.
+
 После добавления **APNs** необходимо отредактировать скрипт `NotificationService` для получения уведомлений с отображением изображений. Вы можете просто скопировать код из [примера](https://github.com/stephan-syndi/DarkCoreFramework-ios/blob/main/NotificationService%20Sample/NotificationService.swift) или исправить свой скрипт. 
 
 > [!NOTE]
 > Target `notifications` должен иметь следующие фреймворки и библиотеки и помечены как `Do Not Embed`:
 > + `FirebaseCore.framework`
 > + `FirebaseMessaging.framework`
+
 
 ## Интеграция фреймворка 
 
