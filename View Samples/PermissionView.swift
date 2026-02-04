@@ -1,10 +1,3 @@
-//
-//  PermissionView.swift
-//  MixFruits
-//
-//  Created by Stepan Degtsiaryk on 29.01.26.
-//
-
 import SwiftUI
 import DarkCoreFramework
 

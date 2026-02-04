@@ -1,6 +1,7 @@
 # Интеграция DarkCoreFramework
 
 - [Подготовка](#подготовка)
+    + [APNs](#notification-service-extension)
 - [Интеграция фреймворка](#интеграция-фреймворка)
 - [Настройка кора](#настройка-кора)
     + [Настройка конфигурации](#настройка-конфигурации)
@@ -33,7 +34,7 @@ pod init
 В проекте создастся _.xcworkspace_ и _podfile_. 
 
 3. Откройте **Podfile** и заменить его содержимое следующим кодом:
-``` podfile
+```podfile
 platform :ios, '15.0'
 
 target 'YourTargetName' do
@@ -82,7 +83,16 @@ end
 - Photo Library: Allows photo library access.
 - User Tracking: Your data will be used to personalize ads.
 
-7. Добавьте в проект **Notification Service Extension** и настройте его как обычно. 
+7. Добавьте в проект **Notification Service Extension** и настройте его.
+
+#### Notification Service Extension 
+
+После добавления **APNs** необходимо отредактировать скрипт `NotificationService` для получения уведомлений с отображением изображений. Вы можете просто скопировать код из [примера]() или исправить свой скрипт. 
+
+> [!NOTE]
+> Target `notifications` должен иметь следующие фреймворки и библиотеки и помечены как `Do Not Embed`:
+> + `FirebaseCore.framework`
+> + `FirebaseMessaging.framework`
 
 ## Интеграция фреймворка 
 
