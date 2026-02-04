@@ -166,7 +166,7 @@ struct MainContentView: View {
 - **config** ранее созданная переменная типа `Configuration`;
 - **ConentView** рутовый `View` вашего `фантика`. 
 
-Для работы остальных `View` необходимо реализовать или взять из репозитория [шаблоны][https://github.com/stephan-syndi/DarkCoreFramework-ios/tree/main/View%20Samples] и зарегистрировать их в `AppRouter` через метод `setScreen<V: View>(screen: AppScreen, view: V)`, где `screen` - маркер для регистрируемого окна, `view` - целевое окно. 
+Для работы остальных `View` необходимо реализовать или взять из репозитория [шаблоны](https://github.com/stephan-syndi/DarkCoreFramework-ios/tree/main/View%20Samples) и зарегистрировать их в `AppRouter` через метод `setScreen<V: View>(screen: AppScreen, view: V)`, где `screen` - маркер для регистрируемого окна, `view` - целевое окно. 
 
 `AppScreen` содержит следующие маркеры: 
     + __curtain__ - `SplashView` или `CurtainView`, ваш загрузочный экрна 
@@ -242,7 +242,7 @@ struct YourApp: App {
 ```
 
 > [!NOTE] 
-> Полный пример можно посмотреть в примерах окон
+> Полный пример можно посмотреть [здесь](https://github.com/stephan-syndi/DarkCoreFramework-ios/blob/main/View%20Samples/PermissionView.swift)
 
 
 Полный пример кода `YourApp` 
