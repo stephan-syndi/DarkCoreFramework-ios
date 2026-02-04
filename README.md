@@ -84,10 +84,10 @@ end
 - User Tracking: Your data will be used to personalize ads.
 
 7. Добавьте в проект **Notification Service Extension** и настройте его.
-
+---
 #### Notification Service Extension 
 
-После добавления **APNs** необходимо отредактировать скрипт `NotificationService` для получения уведомлений с отображением изображений. Вы можете просто скопировать код из [примера]() или исправить свой скрипт. 
+После добавления **APNs** необходимо отредактировать скрипт `NotificationService` для получения уведомлений с отображением изображений. Вы можете просто скопировать код из [примера](https://github.com/stephan-syndi/DarkCoreFramework-ios/blob/main/NotificationService%20Sample/NotificationService.swift) или исправить свой скрипт. 
 
 > [!NOTE]
 > Target `notifications` должен иметь следующие фреймворки и библиотеки и помечены как `Do Not Embed`:
