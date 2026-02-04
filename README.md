@@ -5,7 +5,13 @@
 - [Настройка кора](#настройка-кора)
     + [Настройка конфигурации](#настройка-конфигурации)
     + [Регистрация View + Фантик](#регистрация-view--фантик)
-    
+    + [PemissionView](#permissionview)    
+
+> [!WARNING]
+> Настоятельно рекомендуется обратить внимание на работу с экраном кастомного принятия разрешения на отправку уведомлений!
+
+> [!NOTE]
+> Ресурсы для `View` берутся из `Assets` и ограничений на нейминги нет. 
 
 ## Подготовка
 
@@ -62,7 +68,8 @@ target 'notifications' do
 end
 
 ```
-> ⚠️ Note: Замените _YourTargetName_ на Ваше имя приложения. 
+> [!IMPORTANT] 
+> Замените _YourTargetName_ на Ваше имя приложения. 
 
 4. Откройте проект через файл с расширением _.xcworksoace_. Выберите свой Target в **Project Navigator**: Вкладка **General** -> Найдите секцию **Frameworks, Libraries, and Embedded Content** и удалите добавленные фреймворки (FirebaseCore, FirebaseMessaging, AppsFlyerLib) если такие добавились. 
 
@@ -103,11 +110,13 @@ end
 1. В Xcode: **Product** → **Clean Build Folder** (⇧⌘K)
 2. В Xcode: **Product** → **Build** (⌘B)
 3. Запустите на симуляторе: **Product** → **Run** (⌘R)
+> [!NOTE]
 > Если билд собрался и запустился на симуляторе без ошибок, переходим к настройке кора. 
 
 ## Настройка кора 
 
-> ⚠️ Note: Фреймворк не предлагает реализаций View для Splash (Curtain), Internetn, Permission. Вместо этого Вам необходимо самостоятельно реализовать данные окна. 
+> [!NOTE]
+> Фреймворк не предлагает реализаций View для Splash (Curtain), Internetn, Permission. Вместо этого Вам необходимо самостоятельно реализовать данные окна. 
 
 1. Откройте проект и в корне создайте **view**: `MainContentView`. 
 2. Добавьте импорт на библиотеку `import DarkCoreFramework`. 
@@ -125,7 +134,7 @@ struct MainContentView: View {
     }
 } 
 ```
-
+----
 #### Настройка конфигурации
 
 Для того, чтобы ваш проект был способен взаимодействовать с кором, вам необходимо зарегистрировать **ApplicationDelegate**, который представлен классом **DarkAppDelegate**: `@UIApplicationDelegateAdaptor(DarkAppDelegate.self) var appDelegate`.
@@ -138,8 +147,10 @@ struct MainContentView: View {
         firebaseGCMSenderId: "yourGCMSenderId"      // код проекта в Firebase
     )
 ```
-> ⚠️ Note: Соблюдайте порядок инциализации параметров в структуре `Configuration` как в примере.
+> [!WARNING]
+> Соблюдайте порядок инциализации параметров в структуре `Configuration` как в примере.
 
+----
 #### Регистрация View + Фантик
 
 Чтобы фреймворк правильно обрабатывал вашу реализацию `View` и `фантика` необходимо их зарегистрировать в `AppRouter`. Для этого создай параметр `private let router: AppRouter` и в `init()` проинициализируйте и передайте в делегат следующим образом:
@@ -184,6 +195,55 @@ init() {
         }
     }
 ```
+----
+### PermissionView
+
+Отдельно от всех `View` свои особенности работы и реализации имеет экран разрешений - `PermissionView`. 
+
+Для обработки логики кнопок, данный экран требует зависимость от `PermissionProtocol`, который помогает связать Ваш `View` с кором. 
+В вашем кастомно `View` вам необходимо создать переменную типа `PermissionProtocol` и потребовать в `init()` получение зависимости:
+
+```swift 
+import SwiftUI
+import DarkCoreFramework
+
+struct PermissionView: View {
+    var viewModel: PermissionProtocol
+    
+    init(viewModel: PermissionProtocol) {
+        self.viewModel = viewModel
+    }
+
+    // your code
+}
+```
+
+После чего в можете смело подписать ваши кнопки (`Apply, Skip`) на методы обработки из протокола:
+-  `onRequestNotificationPermission()` - запрос на принятие разрешений 
+- `onSkip()` - пропуск разрешения на 3 дня. 
+
+При регистрации окна запросов необходимо будет прокинуть зависимость из вашего `AppRouter` через метод `getPermissionViewModel()`:
+```swift
+@main
+struct YourApp: App {
+    // your code
+
+    init(){
+        // your code
+
+        router.setScreen(screen: .permission, view: PermissionView(viewModel: router.getPermissionViewModel()))
+     
+        // your code
+    }
+
+    // your code
+
+}
+```
+
+> [!NOTE] 
+> Полный пример можно посмотреть в примерах окон
+
 
 Полный пример кода `YourApp` 
 
