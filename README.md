@@ -7,6 +7,7 @@
     + [Настройка конфигурации](#настройка-конфигурации)
     + [Регистрация View + Фантик](#регистрация-view--фантик)
     + [PemissionView](#permissionview)    
+- [FAQ](#faq)
 
 > [!WARNING]
 > Настоятельно рекомендуется обратить внимание на работу с экраном кастомного принятия разрешения на отправку уведомлений!
@@ -295,3 +296,7 @@ struct YourApp: App {
 }
 
 ```
+
+## FAQ 
+#### Sandbox: rsync.samba 
+Проблема распространненая, решение можно посмотреть [здесь](https://stackoverflow.com/questions/76590131/error-while-build-ios-app-in-xcode-sandbox-rsync-samba-13105-deny1-file-w)
