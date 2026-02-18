@@ -2,7 +2,7 @@
 
 - [Подготовка](#подготовка)
     + [APNs](#notification-service-extension)
-    + [Info.plist](#info-plist)
+    + [Info.plist](#настройки-info-основного-таргета)
 - [Интеграция фреймворка](#интеграция-фреймворка)
 - [Настройка кора](#настройка-кора)
     + [Настройка конфигурации](#настройка-конфигурации)
@@ -98,7 +98,7 @@ end
 > + `FirebaseCore.framework`
 > + `FirebaseMessaging.framework`
 ----
-#### Info.plist 
+#### Настройки Info основного таргета
 После добавления всех необходимых `Capability` рекомендуется перейти на вкладку `Info` вашего основного таргета и в секции `Custom iOS Target Properties` убедиться что есть следующие разрешения:
     + Required background modes (2 items)
     + Privacy - Camera Usage Description
