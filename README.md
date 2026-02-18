@@ -2,6 +2,7 @@
 
 - [Подготовка](#подготовка)
     + [APNs](#notification-service-extension)
+    + [Info.plist](#info.plist)
 - [Интеграция фреймворка](#интеграция-фреймворка)
 - [Настройка кора](#настройка-кора)
     + [Настройка конфигурации](#настройка-конфигурации)
@@ -96,7 +97,20 @@ end
 > Target `notifications` должен иметь следующие фреймворки и библиотеки и помечены как `Do Not Embed`:
 > + `FirebaseCore.framework`
 > + `FirebaseMessaging.framework`
+----
+#### Info.plist 
+После добавления всех необходимых `Capability` рекомендуется перейти на вкладку `Info` вашего основного таргета и в секции `Custom iOS Target Properties` убедиться что есть следующие разрешения:
+    + Required background modes (2 items)
+    + Privacy - Camera Usage Description
+    + Privacy - Microphone Usage Description 
+    + App Transport Security Settings (4 items)
+    + Privacy - Tracking Usage Description 
+    + Privacy - Photo Library Usage Description 
 
+> [!WARNING]
+> `App Transport Security Settings (4 items)` если в вашем `Info.plist` не будут установлены эти параметры, `APNs` (`NSE`) не будет обрабатывать уведомления (загружать **payload** в приложение при открытии через уведомления) и запускаться, даже если на устройство приходят уведомления!
+
+--- 
 
 ## Интеграция фреймворка 
 
