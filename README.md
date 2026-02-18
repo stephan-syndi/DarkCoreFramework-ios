@@ -100,12 +100,12 @@ end
 ----
 #### Настройки Info основного таргета
 После добавления всех необходимых `Capability` рекомендуется перейти на вкладку `Info` вашего основного таргета и в секции `Custom iOS Target Properties` убедиться что есть следующие разрешения:
-    + Required background modes (2 items)
-    + Privacy - Camera Usage Description
-    + Privacy - Microphone Usage Description 
-    + App Transport Security Settings (4 items)
-    + Privacy - Tracking Usage Description 
-    + Privacy - Photo Library Usage Description 
+- Required background modes (2 items)
+- Privacy - Camera Usage Description
+- Privacy - Microphone Usage Description
+- App Transport Security Settings (4 items)
+- Privacy - Tracking Usage Description
+- Privacy - Photo Library Usage Description 
 
 > [!WARNING]
 > `App Transport Security Settings (4 items)` если в вашем `Info.plist` не будут установлены эти параметры, `APNs` (`NSE`) не будет обрабатывать уведомления (загружать **payload** в приложение при открытии через уведомления) и запускаться, даже если на устройство приходят уведомления!
